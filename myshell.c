@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
 
-    char output[BUFFER_LEN] ={ 0 };
+
     // Parse the commands provided using argc and argv
 
     // Perform an infinite loop getting command input from users
@@ -41,17 +41,17 @@ int main(int argc, char *argv[])
         // cd command -- change the current directory
         if (strcmp(command, "cd") == 0)
         {
-        	strcat(command," ");
-        	strcat(command,arg);
+        	if (strcmp(arg,"")!= 0){
+				strcat(command," ");
+				strcat(command,arg);
+        	}
         	system(command);
-
-        	strcpy(output,"Current working directory changed to: ");
-        	strcat(output,arg);
-        	fputs(output,stderr);
         }
 
         // other commands here...
-        
+        else if (strcmp(command,"clr")== 0){
+        	system("cls");
+        }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0)
         {
