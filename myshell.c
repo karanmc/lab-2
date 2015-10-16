@@ -41,11 +41,17 @@ int main(int argc, char *argv[])
         // cd command -- change the current directory
         if (strcmp(command, "cd") == 0)
         {
-
+        	if (strcmp(arg,"")!= 0){
+				strcat(command," ");
+				strcat(command,arg);
+        	}
+        	system(command);
         }
 
         // other commands here...
-        
+        else if (strcmp(command,"clr")== 0){
+        	system("cls");
+        }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0)
         {
