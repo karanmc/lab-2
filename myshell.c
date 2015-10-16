@@ -28,22 +28,30 @@ int main(int argc, char *argv[])
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
 
+
     // Parse the commands provided using argc and argv
 
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
+    	sscanf(buffer,"%s %s",command,arg);
 
         // Check the command and execute the operations for each command
         // cd command -- change the current directory
         if (strcmp(command, "cd") == 0)
         {
-            // your code here
+        	if (strcmp(arg,"")!= 0){
+				strcat(command," ");
+				strcat(command,arg);
+        	}
+        	system(command);
         }
 
         // other commands here...
-        
+        else if (strcmp(command,"clr")== 0){
+        	system("cls");
+        }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0)
         {
