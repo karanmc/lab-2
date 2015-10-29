@@ -27,7 +27,9 @@ int main(int argc, char *argv[])
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
+    char cwd[BUFFER_LEN] = { 0 };
 
+    int paused = 0;
 
     // Parse the commands provided using argc and argv
 
@@ -38,26 +40,61 @@ int main(int argc, char *argv[])
     	sscanf(buffer,"%s %s",command,arg);
 
         // Check the command and execute the operations for each command
-        // cd command -- change the current directory
-        if (strcmp(command, "cd") == 0)
+
+    	//pause has priority, we want to check if paused or not before checking if its actually a command
+    	if (strcmp(command,"pause")== 0 && paused != 0 && strcmp(arg, "") == 0){
+    		paused = 1;
+    	}
+    	else if (paused == 0){
+    		if (strcmp(buffer, "\n") == 0){
+    			paused = 0;
+    		}
+        }
+    	  // cd command -- change the current directory
+    	else if (strcmp(command, "cd") == 0)
         {
         	if (strcmp(arg,"")!= 0){
 				strcat(command," ");
 				strcat(command,arg);
+				system(command);
         	}
-        	system(command);
-        }
+        	else{
+        		system("pwd");
+        	}
 
+        }
+    	// directory listing
+    	else if (strcmp(command, "dir") == 0 && strcmp(arg, "") == 0)
+    	{
+    		getcwd(cwd, sizeof(cwd)); //store cwd
+    		command = "cd"; //switch to cd command
+    		strcat(command," ");
+    		strcat(command,arg);
+    		system(command);
+    		system("ls"); // display all files (linux) within cwd
+    		strcat(command," ");
+    		strcat(command,cwd);
+    		system(command);//cd back to stored cwd
+
+    	}
         // other commands here...
         else if (strcmp(command,"clr")== 0){
-        	system("cls");
+        	//system("cls"); // windows terminal usage
+        	system("reset") // linux terminal usage
         }
         // quit command -- exit the shell
-        else if (strcmp(command, "quit") == 0)
+        else if (strcmp(command, "quit") == 0 && strcmp(arg, "") == 0)
         {
             return EXIT_SUCCESS;
         }
+        // echo command -- repeat back argument then move to next line with \n
+        else if (strcmp(command, "echo") == 0 )
+        {
+        	printf(arg,"\n");
+        }
+        else if (strcmp(command, "help") == 0 && strcmp(arg, "") == 0){
 
+        }
         // Unsupported command
         else
         {
