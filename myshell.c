@@ -77,7 +77,13 @@ int main(int argc, char *argv[])
     		system(command);//cd back to stored cwd
 
     	}
-        // other commands here...
+    	//enviorment variables
+    	else if (strcmp(command, "environ") == 0 && strcmp(arg, "") == 0)
+    	{
+    		system("printenv"); // again linux terminal usage
+    	}
+
+        // clear command
         else if (strcmp(command,"clr")== 0){
         	//system("cls"); // windows terminal usage
         	system("reset") // linux terminal usage
