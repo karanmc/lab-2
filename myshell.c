@@ -27,37 +27,98 @@ int main(int argc, char *argv[])
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
+    char cwd[BUFFER_LEN] = { 0 };
+    char line[BUFFER_LEN] = { 0 };
 
+    char shell[BUFFER_LEN] = { 0 };
+    getcwd(shell, sizeof(shell));
+    strcat(shell,r"\\myshell");//store shells working directory
+
+    int paused = 0;
+
+
+    FILE *readme;
 
     // Parse the commands provided using argc and argv
-
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
-    	sscanf(buffer,"%s %s",command,arg);
+    	sscanf(buffer,"%s %s",command,arg); // Parse the commands provided using argc and argv
 
         // Check the command and execute the operations for each command
-        // cd command -- change the current directory
-        if (strcmp(command, "cd") == 0)
+
+    	//pause has priority, we want to check if paused or not before checking if its actually a command
+    	if (strcmp(command,"pause")== 0 && paused != 0 && strcmp(arg, "") == 0){
+    		paused = 1;
+    	}
+    	else if (paused == 0){
+    		if (strcmp(buffer, "\n") == 0){
+    			paused = 0;
+    		}
+        }
+    	  // cd command -- change the current directory
+    	else if (strcmp(command, "cd") == 0)
         {
         	if (strcmp(arg,"")!= 0){
 				strcat(command," ");
 				strcat(command,arg);
+				system(command);
         	}
-        	system(command);
-        }
+        	else{
+        		system("pwd");
+        	}
 
-        // other commands here...
+        }
+    	// directory listing
+    	else if (strcmp(command, "dir") == 0 && strcmp(arg, "") == 0)
+    	{
+    		getcwd(cwd, sizeof(cwd)); //store cwd
+    		strcpy(command,"cd"); //switch to cd command
+    		strcat(command," ");
+    		strcat(command,arg);
+    		system(command);
+    		system("ls"); // display all files (linux) within cwd
+    		strcat(command," ");
+    		strcat(command,cwd);
+    		system(command);//cd back to stored cwd
+
+    	}
+    	//enviorment variables
+    	else if (strcmp(command, "environ") == 0 && strcmp(arg, "") == 0)
+    	{
+    		system("printenv"); // again linux terminal usage
+    	}
+
+        // clear command
         else if (strcmp(command,"clr")== 0){
-        	system("cls");
+        	//system("cls"); // windows terminal usage
+<<<<<<< HEAD
+        	system("reset"); // linux terminal usage
+=======
+        	system("reset") // linux terminal usage
+>>>>>>> 04d1a1cd10436e5c8215baad5f44c5edf1034907
         }
         // quit command -- exit the shell
-        else if (strcmp(command, "quit") == 0)
+        else if (strcmp(command, "quit") == 0 && strcmp(arg, "") == 0)
         {
             return EXIT_SUCCESS;
         }
-
+        // echo command -- repeat back argument then move to next line with \n
+        else if (strcmp(command, "echo") == 0 )
+        {
+        	strcad(arg,"\n");
+        	fputs(arg,stderr);
+        }
+        else if (strcmp(command, "help") == 0 && strcmp(arg, "") == 0){
+        	readme = fopen("README.md", "rt");
+        	line = fgets(readme);
+        	while (line != EOF){
+        	    fputs(line,stderr);
+        	    line = fgets(readme);
+        	}
+        	fclose(readme);
+        }
         // Unsupported command
         else
         {
