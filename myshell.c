@@ -29,15 +29,21 @@ int main(int argc, char *argv[])
     char arg[BUFFER_LEN] = { 0 };
     char cwd[BUFFER_LEN] = { 0 };
 
+    char shell[BUFFER_LEN] = { 0 };
+    getcwd(shell, sizeof(shellcwd));
+    strcat(shell,"\myshell");//store shells working directory
+
     int paused = 0;
 
-    // Parse the commands provided using argc and argv
 
+    FILE *readme;
+
+    // Parse the commands provided using argc and argv
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
-    	sscanf(buffer,"%s %s",command,arg);
+    	sscanf(buffer,"%s %s",command,arg); // Parse the commands provided using argc and argv
 
         // Check the command and execute the operations for each command
 
@@ -100,10 +106,17 @@ int main(int argc, char *argv[])
         // echo command -- repeat back argument then move to next line with \n
         else if (strcmp(command, "echo") == 0 )
         {
-        	printf(arg,"\n");
+        	strcad(arg,"\n");
+        	fputs(arg,stderr);
         }
         else if (strcmp(command, "help") == 0 && strcmp(arg, "") == 0){
-
+        	readme = fopen("README.md", "rt");
+        	line = fgetc(readme);
+        	while (line != EOF){
+        	    fputs(line,stderr);
+        	    line = fgetc(readme);
+        	}
+        	fclose(readme);
         }
         // Unsupported command
         else
