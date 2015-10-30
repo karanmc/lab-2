@@ -28,10 +28,11 @@ int main(int argc, char *argv[])
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
     char cwd[BUFFER_LEN] = { 0 };
+    char line[BUFFER_LEN] = { 0 };
 
     char shell[BUFFER_LEN] = { 0 };
-    getcwd(shell, sizeof(shellcwd));
-    strcat(shell,"\myshell");//store shells working directory
+    getcwd(shell, sizeof(shell));
+    strcat(shell,r"\\myshell");//store shells working directory
 
     int paused = 0;
 
@@ -73,7 +74,7 @@ int main(int argc, char *argv[])
     	else if (strcmp(command, "dir") == 0 && strcmp(arg, "") == 0)
     	{
     		getcwd(cwd, sizeof(cwd)); //store cwd
-    		command = "cd"; //switch to cd command
+    		strcpy(command,"cd"); //switch to cd command
     		strcat(command," ");
     		strcat(command,arg);
     		system(command);
@@ -107,10 +108,10 @@ int main(int argc, char *argv[])
         }
         else if (strcmp(command, "help") == 0 && strcmp(arg, "") == 0){
         	readme = fopen("README.md", "rt");
-        	line = fgetc(readme);
+        	line = fgets(readme);
         	while (line != EOF){
         	    fputs(line,stderr);
-        	    line = fgetc(readme);
+        	    line = fgets(readme);
         	}
         	fclose(readme);
         }
