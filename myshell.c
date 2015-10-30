@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
     char shell[BUFFER_LEN] = { 0 };
     getcwd(shell, sizeof(shell));
-    strcat(shell,r"\\myshell");//store shells working directory
+    strcat(shell,"\\myshell");//store shells working directory
 
     int paused = 0;
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
         // clear command
         else if (strcmp(command,"clr")== 0){
         	//system("cls"); // windows terminal usage
-        	system("reset") // linux terminal usage
+        	system("reset"); // linux terminal usage
         }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0 && strcmp(arg, "") == 0)
@@ -103,12 +103,12 @@ int main(int argc, char *argv[])
         // echo command -- repeat back argument then move to next line with \n
         else if (strcmp(command, "echo") == 0 )
         {
-        	strcad(arg,"\n");
+        	strcat(arg,"\n");
         	fputs(arg,stderr);
         }
         else if (strcmp(command, "help") == 0 && strcmp(arg, "") == 0){
         	readme = fopen("README.md", "rt");
-        	line = fgets(readme);
+        	fgets(line,BUFFER_LENreadme);
         	while (line != EOF){
         	    fputs(line,stderr);
         	    line = fgets(readme);
