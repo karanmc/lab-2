@@ -86,7 +86,11 @@ int main(int argc, char *argv[])
         // clear command
         else if (strcmp(command,"clr")== 0){
         	//system("cls"); // windows terminal usage
+<<<<<<< HEAD
         	system("reset"); // linux terminal usage
+=======
+        	system("reset") // linux terminal usage
+>>>>>>> 04d1a1cd10436e5c8215baad5f44c5edf1034907
         }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0 && strcmp(arg, "") == 0)
