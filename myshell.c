@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 			else{
 				system("pwd");
 			}
-
+		
 		}
 		// directory listingc
 		else if (strcmp(command, "dir") == 0 && strcmp(arg, "") == 0)
